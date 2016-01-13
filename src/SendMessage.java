@@ -8,43 +8,36 @@ import java.net.URL;
 
 public class SendMessage {
 
-    //config
-    static String apiKey = "AIzaSyALcD9lkt-DatzdKa0aO5qgAQ3yDavRD1o"; // Put here your API key
-//    static String apiKey = "AIzaSyA3YH3c_hoiO9fVIxPvuvxdCE3Bcqhbr5M"; // Put here your API key IOS
-    
-    public static void send(String title, String body, String to_token) {
+	public static final int TYPE_DOWN = 0;
+	public static final int TYPE_UP = 1;
+	
+    /**
+     * 
+     * @param type 0 down, 1 up
+     * @param parsed parsed string
+     * @param to_token array of device tokens
+     */
+    public static void send(int type, String phpresult, String to_token) {
     	
-        String notification = "{\"sound\":\"default\",\"badge\":\"2\",\"title\":\"" + title +"\",\"body\":\"" + body + "!\"}"; // put the message you want to send here
-        String messageToSend = "{\"registration_ids\":[\"" + to_token + "\"],\"data\":" + notification + "}"; // Construct the message.
+        String notification = "{\"sound\":\"default\",\"badge\":\"2\",\"title\":\"" + type + "\",\"body\":\"" + phpresult + "\"}";
+        String messageToSend = "{\"registration_ids\":[\"" + to_token + "\"],\"data\":" + notification + "}";
 
+        System.out.println("  >>>>\n" + messageToSend);
         try {
-
-            // URL
             URL url = new URL("https://android.googleapis.com/gcm/send");
 
-            System.out.println(messageToSend);
-            // Open connection
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-
-            // Specify POST method
             conn.setRequestMethod("POST");
-
-            //Set the headers
             conn.setRequestProperty("Content-Type", "application/json");
-            conn.setRequestProperty("Authorization", "key=" + apiKey);
+            conn.setRequestProperty("Authorization", "key=" + Main.API_KEY);
             conn.setDoOutput(true);
-
-            //Get connection output stream
+            
             DataOutputStream wr = new DataOutputStream(conn.getOutputStream());
-
             byte[] data = messageToSend.getBytes("UTF-8");
             wr.write(data);
-
-            //Send the request and close
             wr.flush();
             wr.close();
 
-            //Get the response
             int responseCode = conn.getResponseCode();
             System.out.println("\nSending 'POST' request to URL : " + url);
             System.out.println("Response Code : " + responseCode);
@@ -58,9 +51,7 @@ public class SendMessage {
             }
             in.close();
 
-            //Print result
-            System.out.println(response.toString()); //this is a good place to check for errors using the codes in http://androidcommunitydocs.com/reference/com/google/android/gcm/server/Constants.html
-
+            System.out.println("  <<<<\n" + response.toString());
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
