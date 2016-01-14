@@ -42,7 +42,7 @@ public class Main {
     public static final String HOST_DB = "http://192.168.20.123:8888/reg.php";
 	
 	// run checking within 1 minute
-	private static final int LOOP_IN_MILLISECOND = 60 * 1000;
+	private static final int LOOP_IN_MILLISECOND = 5 * 1000;
 	private static final DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 	
 	private static int last_id_nu = -1;
@@ -167,8 +167,8 @@ public class Main {
 					System.out.println("    " + id_nu + " " + node_name);
 					
 					String regIds = "";
-					String provinces = Parser.parse(Request.request(String.format("SELECT p.regId FROM pushdevice p, (SELECT DISTINCT pushdevice_id id FROM province_pref WHERE province = '%s') pl WHERE p.id = pl.id", province)));
-					String parsed2 = Parser.parse(provinces);
+					String result2 = Request.request(String.format("SELECT p.regId FROM pushdevice p, (SELECT DISTINCT pushdevice_id id FROM province_pref WHERE province = '%s') pl WHERE p.id = pl.id", province));
+					String parsed2 = Parser.parse(result2);
 					JSONArray js2 = new JSONArray(parsed2);
 					if (js2.length() != 0) {
 						for (int j = 0; j < js2.length(); j++) {
@@ -181,7 +181,7 @@ public class Main {
 							}
 						}
 						
-						SendMessage.send(SendMessage.TYPE_DOWN, result, regIds);
+						SendMessage.send(SendMessage.TYPE_UP, result, regIds);
 					}
 					else {
 						System.out.println("    xxxx");
