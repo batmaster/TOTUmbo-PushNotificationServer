@@ -20,7 +20,7 @@ public class SendMessage {
     public static void send(int type, String phpresult, String to_token) {
     	
         String notification = "{\"sound\":\"default\",\"badge\":\"2\",\"title\":\"" + type + "\",\"body\":\"" + phpresult + "\"}";
-        String messageToSend = "{\"registration_ids\":[\"" + to_token + "\"],\"data\":" + notification + "}";
+        String messageToSend = "{\"registration_ids\":[" + to_token + "],\"data\":" + notification + "}";
 
         System.out.println("  >>>>\n" + messageToSend);
         try {
