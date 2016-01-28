@@ -37,12 +37,19 @@ import org.json.JSONObject;
 
 public class Main {
 	
+	public static final String VERSION = "1.2";
+	public static final String PUBLISH_DATE = "28/01/2016";
+	
+	
+	
+	
     public static final String API_KEY = "AIzaSyALcD9lkt-DatzdKa0aO5qgAQ3yDavRD1o"; // Put here your API key
-//	public static final String HOST_DB = "http://203.114.104.242/umbo/getRecord.php";
-    public static final String HOST_DB = "http://192.168.20.123:8888/reg.php";
+//	public static final String HOST_DB = "http://192.168.10.100/umbo/getRecord.php";
+//    public static final String HOST_DB = "http://192.168.20.123:8888/reg.php";
+    public static final String HOST_DB = "http://203.114.104.242/umbo/getRecord.php";
 	
 	// run checking within 1 minute
-	private static final int LOOP_IN_MILLISECOND = 5 * 1000;
+	private static final int LOOP_IN_MILLISECOND = 60 * 1000;
 	private static final DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 	
 	private static int last_id_nu = -1;
@@ -52,33 +59,17 @@ public class Main {
 	
 	
 	public static void main(String[] args) {
-		System.out.println("Server started!");
-		System.out.println("HOST_DB: " + HOST_DB);
+		System.out.println("========= TOTUmbo Push Notification Server =========");
+		System.out.println("Version : " + VERSION);
+		System.out.println("Date    : " + PUBLISH_DATE);
+		System.out.println("HOST_DB : " + HOST_DB);
+		System.out.println("====================================================");
 		
 		Timer timer = new Timer();
 		CheckTask task = new CheckTask();
 		timer.schedule(task, 0, LOOP_IN_MILLISECOND);
 		
 	}
-	
-//	public static void System.out.println(String str) {
-//		File f = new File(NOW + ".txt");
-//		if(!f.exists())
-//			try {
-//				f.createNewFile();
-//			} catch (IOException e1) {
-//				e1.System.out.printlnStackTrace();
-//			}
-//		
-//		
-//		try {
-//			System.out.System.out.printlnln(str);
-//		    Files.write(Paths.get(NOW + ".txt"), (str + "\n").getBytes(), StandardOpenOption.APPEND);
-//		} catch (IOException e) {
-//			e.System.out.printlnStackTrace();
-//			System.out.System.out.printlnln("Writing file error!!");
-//		}
-//	}
 	
 	private static class CheckTask extends TimerTask {
 	    public void run() {
@@ -128,8 +119,10 @@ public class Main {
 						System.out.println("    xxxx");
 					}
 					
-					upListeningList.add(id_nu);
-					Collections.sort(upListeningList);
+					if (!upListeningList.contains(id_nu)) {
+						upListeningList.add(id_nu);
+						Collections.sort(upListeningList);
+					}
 					last_id_nu = id_nu;
 				}
 			} catch (JSONException e) {
@@ -200,7 +193,7 @@ public class Main {
 			
 			
 			
-			// reconsider
+			// reconsidering
 			arg = "";
 			for (int i = 0; i < upListeningList.size(); i++) {
 				arg += upListeningList.get(i);

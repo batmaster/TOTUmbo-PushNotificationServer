@@ -22,7 +22,7 @@ public class SendMessage {
         String notification = "{\"sound\":\"default\",\"badge\":\"2\",\"title\":\"" + type + "\",\"body\":\"" + phpresult + "\"}";
         String messageToSend = "{\"registration_ids\":[" + to_token + "],\"data\":" + notification + "}";
 
-        System.out.println("  >>>>\n" + messageToSend);
+        System.out.println("  >>>>\n    " + to_token.replace(", ", "\n    "));
         try {
             URL url = new URL("https://android.googleapis.com/gcm/send");
 
@@ -39,8 +39,7 @@ public class SendMessage {
             wr.close();
 
             int responseCode = conn.getResponseCode();
-            System.out.println("\nSending 'POST' request to URL : " + url);
-            System.out.println("Response Code : " + responseCode);
+            System.out.println("    Response Code : " + responseCode);
 
             BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             String inputLine;
@@ -51,7 +50,7 @@ public class SendMessage {
             }
             in.close();
 
-            System.out.println("  <<<<\n" + response.toString());
+            System.out.println("  <<<<\n    " + response.toString());
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
